@@ -1,4 +1,4 @@
-package ru.yandex.practicum.sprint4.project.PageObjects;
+package ru.yandex.practicum.sprint4.project.pageobjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -73,7 +73,17 @@ public class OrderPage {
         driver.findElement(inputPhoneNumber).sendKeys(phoneNumber);
     }
 
-    public void clickContinueButton(){
+    public OrderPage populateFirstPage(String firstName,String lastName,String address,String subwayStation,String phoneNumber){
+        waitTillPageLoaded();
+        setInputFirstName(firstName);
+        setInputLastName(lastName);
+        setInputAddress(address);
+        selectPicklistSubwayStation(subwayStation);
+        setInputPhoneNumber(phoneNumber);
+        return this;
+    }
+
+    public OrderPage clickContinueButton(){
 
         WebElement element = driver.findElement(continueButton);
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
@@ -82,6 +92,7 @@ public class OrderPage {
         .until(ExpectedConditions.visibilityOfElementLocated(continueButton));
 
         driver.findElement(continueButton).click();
+        return this;
     }
 
     public void waitTillNewFieldsWillBeAvailable(){
@@ -98,8 +109,6 @@ public class OrderPage {
         driver.findElement(closeCookiesButton).click();
         driver.findElement(dropdownRent).click();
 
-        System.out.println("!!!!!! dropdownRentvalue = " + dropdownRentValue);
-
         By rentValue = By.xpath(String.format(".//div[text()='%s']",dropdownRentValue));
 
         WebElement rentElement = driver.findElement(rentValue);
@@ -111,33 +120,47 @@ public class OrderPage {
         rentElement.click();
     }
 
-    public void selectBlackPearlCheckbox(){
+    public OrderPage selectBlackPearlCheckbox(){
         assertTrue(driver.findElement(checkboxBlackPearl).isEnabled());
         driver.findElement(checkboxBlackPearl).click();
+        return this;
     }
 
-    public void selectGrayHopelessnessCheckbox(){
+    public OrderPage selectGrayHopelessnessCheckbox(){
         assertTrue(driver.findElement(checkboxGrayHopelessness).isEnabled());
         driver.findElement(checkboxGrayHopelessness).click();
+        return this;
     }
 
-    public void setInputComments(String comment){
-        driver.findElement(inputComments).sendKeys(comment);
+    public OrderPage setInputComments(String comments){
+        driver.findElement(inputComments).sendKeys(comments);
+        return this;
     }
 
-    public void clickOrderButtons(){
+    public OrderPage populateSecondPageWithOutCheckbox(String date,String dropdownRentValue,String comments){
+        waitTillNewFieldsWillBeAvailable();
+        setDatePicker(date);
+        setDropdownRent(dropdownRentValue);
+        setInputComments(comments);
+        return this;
+    }
+
+    public OrderPage clickOrderButtons(){
         assertTrue(driver.findElement(orderButtons).isEnabled());
-        driver.findElements(orderButtons).get(1).click();;
+        driver.findElements(orderButtons).get(1).click();
+        return this;
     }
 
-    public void clickYesButtons(){
+    public OrderPage clickYesButtons(){
         assertTrue(driver.findElement(yesButton).isEnabled());
-        driver.findElement(yesButton).click();;
+        driver.findElement(yesButton).click();
+        return this;
     }
 
-    public void checkThatOrderSubmited(){
+    public OrderPage checkThatOrderSubmited(){
         new WebDriverWait(driver, Duration.ofSeconds(3))
         .until(ExpectedConditions.visibilityOf(driver.findElement(textSuccessOrdering)));
+        return this;
     }
 
 }

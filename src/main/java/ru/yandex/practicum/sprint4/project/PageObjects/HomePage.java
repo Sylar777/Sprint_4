@@ -1,4 +1,4 @@
-package ru.yandex.practicum.sprint4.project.PageObjects;
+package ru.yandex.practicum.sprint4.project.pageobjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -25,22 +25,29 @@ public class HomePage {
     }
 
     public void clickBottomOrderButton(){
+
+        WebElement element = driver.findElements(orderButtons).get(1);
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+
         driver.findElements(orderButtons).get(1).click();
     }
 
-    public void clickOnAccordionItem(int number){
+    public HomePage clickOnAccordionItem(int number){
         driver.findElements(accordionItems).get(number).click();
+        return this;
     }
 
-    public void scrollToAccordionItem(int number){
+    public HomePage scrollToAccordionItem(int number){
         WebElement element = driver.findElements(accordionItems).get(number);
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+        return this;
     }
 
-    public void checkTextForAccordionItem(int number,String text){
+    public HomePage checkTextForAccordionItem(int number,String text){
         WebElement element = driver.findElements(accordionItemsText).get(number);
 
         new WebDriverWait(driver, Duration.ofSeconds(3))
         .until(ExpectedConditions.textToBePresentInElement(element,text));
+        return this;
     }
 }
